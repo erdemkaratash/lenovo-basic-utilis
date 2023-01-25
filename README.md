@@ -1,6 +1,6 @@
 # Lenovo Basic Utilities
 
-A Bash script for controlling basic functionality on Lenovo laptops for Linux users without access to Lenovo Vantage.
+A Bash script for controlling basic functionality on Lenovo laptops for Linux users who does not have access to Lenovo Vantage.
 
 ## Installation
 1. Download the script
