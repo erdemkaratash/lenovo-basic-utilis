@@ -1,0 +1,149 @@
+#!/bin/bash
+
+[ "$UID" -eq 0 ] || exec sudo "$0" "$@"
+echo ""
+echo "***Alpha version - Camera Functionality Not Working***"
+echo ""
+echo "LHS: Parameter to be changed | RHS: options"
+echo "conservation(1) status(0)|enable(1)|disable(2)"
+echo "camera(2) status(0)|enable(1)|disable(2)"
+echo "fn_lock(3) status(0)|enable(1)|disable(2)"
+echo "touchpad(4) status(0)|enable(1)|disable(2)"
+echo "exit(5)"
+echo ""
+
+while true;do
+    read sw
+
+    if [ $sw -eq 10 ]
+    then
+        if grep -q 1 /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode;
+        then
+            echo ""
+            echo "Conservation mode is enabled."
+        fi
+        if grep -q 0 /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode;
+        then
+            echo ""
+            echo "Conservation mode is disabled."
+        fi
+    fi
+
+    if [ $sw -eq 11 ]
+    then
+        echo 1 > /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode
+        echo ""
+        echo "Conservation mode enabled."
+        echo "You will see the result about 1-2 minutes."
+        echo ""
+    fi
+
+    if [ $sw -eq 12 ]
+    then
+        echo 0 > /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode
+        echo ""
+        echo "Conservation mode disabled."
+        echo "You will see the result about 1-2 minutes."
+        echo ""
+    fi
+
+    if [ $sw -eq 20 ]
+    then
+        if grep -q 1 /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/camera_power;
+        then
+            echo ""
+            echo "Camera is enabled."
+        fi
+        if grep -q 0 /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/camera_power;
+        then
+            echo ""
+            echo "Camera is disabled."
+        fi
+    fi
+
+    if [ $sw -eq 21 ]
+    then
+        echo 1 > /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/camera_power
+        echo ""
+        echo "Camera is enabled."
+        echo ""
+    fi
+
+    if [ $sw -eq 22 ]
+    then
+        echo 0 > /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/camera_power
+        echo ""
+        echo "Camera is disabled."
+        echo ""
+    fi
+
+
+
+
+    if [ $sw -eq 30 ]
+    then
+        if grep -q 1 /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/fn_lock;
+        then
+            echo ""
+            echo "F# keys by default"
+        fi
+        if grep -q 0 /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/fn_lock;
+        then
+            echo ""
+            echo "Special functionality keys by default"
+        fi
+    fi
+
+    if [ $sw -eq 31 ]
+    then
+        echo 0 > /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/fn_lock
+        echo ""
+        echo "Special functionality keys by default"
+        echo ""
+    fi
+
+    if [ $sw -eq 32 ]
+    then
+        echo 1 > /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/fn_lock
+        echo ""
+        echo "F# keys by default"
+        echo ""
+    fi
+
+    if [ $sw -eq 40 ]
+    then
+        if grep -q 1 /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/touchpad;
+        then
+            echo ""
+            echo "Touchpad is enabled"
+        fi
+        if grep -q 0 /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/touchpad;
+        then
+            echo ""
+            echo "Touchpad is disabled"
+        fi
+    fi
+
+    if [ $sw -eq 41 ]
+    then
+        xinput set-prop "SynPS/2 Synaptics TouchPad" "Device Enabled" 1
+        echo ""
+        echo "Touchpad is enabled"
+        echo ""
+    fi
+
+    if [ $sw -eq 42 ]
+    then
+        xinput set-prop "SynPS/2 Synaptics TouchPad" "Device Enabled" 0
+        echo ""
+        echo "Touchpad is disabled"
+        echo ""
+    fi
+
+
+
+    if [ $sw -eq 5 ]
+    then
+        exit 0
+    fi
+done
